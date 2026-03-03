@@ -6,7 +6,22 @@ MCP server for Google Calendar integration.
 
 ### 1. Google Cloud credentials
 
-Place your OAuth `credentials.json` from the Google Cloud Console in a known location.
+Create an OAuth `credentials.json` via the Google Cloud Console:
+
+1. **Create a Google Cloud project** (if you don't have one) at [console.cloud.google.com](https://console.cloud.google.com)
+2. **Enable the Google Calendar API** — use [this direct link](https://console.cloud.google.com/flows/enableapi?apiid=calendar-json.googleapis.com), select your project, and click **Enable**
+3. **Configure the OAuth consent screen** at [Auth Branding](https://console.cloud.google.com/auth/branding):
+   - Choose **External** for personal Gmail accounts (add yourself as a test user under **Audience**) or **Internal** for Google Workspace
+   - Fill in app name, support email, and contact info
+4. **Create OAuth credentials** at [Auth Clients](https://console.cloud.google.com/auth/clients):
+   - Click **Create Client** → Application type **Desktop app** → **Create**
+   - Click **Download JSON** and save the file as `credentials.json`
+
+> **Note:** The `credentials.json` contains your Client ID and Secret — do not commit it to version control.
+
+See the [Google Calendar API Python quickstart](https://developers.google.com/workspace/calendar/api/quickstart/python) for the full official guide.
+
+Place the `credentials.json` in a known location.
 
 ### 2. Initial token generation
 
@@ -42,3 +57,19 @@ The token path defaults to `token.json` next to the credentials file. Override w
 
 - **list_calendar_events** — List all events for a given date
 - **get_calendar_event** — Get full details of a specific event by ID
+
+## Example: Claude Code skill for Obsidian meeting notes
+
+The [`examples/skills/meeting-notes/`](examples/skills/meeting-notes/) directory contains a Claude Code [skill](https://docs.anthropic.com/en/docs/claude-code/skills) that creates Obsidian meeting notes from Google Calendar events.
+
+Usage: type `/meeting-notes` (or `/meeting-notes tomorrow`) in Claude Code. It lists your events, lets you pick one, and creates a pre-filled Obsidian note with attendees, agenda, and sections for notes and action items.
+
+To use it, copy the skill into your Obsidian vault's `.claude/skills/` directory:
+
+```
+your-vault/
+  .claude/
+    skills/
+      meeting-notes/
+        SKILL.md
+```
